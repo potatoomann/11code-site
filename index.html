@@ -183,11 +183,11 @@
     }
 
     .profile-btn {
-      background: linear-gradient(135deg, var(--accent, #e5152b), #ff4757);
-      border: 2px solid rgba(255,255,255,0.1);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
       color: white;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       width: 40px;
       height: 40px;
@@ -195,16 +195,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(229,21,43,0.3);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      transition: transform 0.18s ease, background-color 0.18s ease;
+      box-shadow: none;
+      text-transform: none;
+      letter-spacing: normal;
     }
 
     .profile-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(229,21,43,0.5);
-      border-color: rgba(255,255,255,0.2);
+      transform: scale(1.06);
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.18);
     }
 
     .profile-btn:active {
@@ -565,15 +565,16 @@
     <div class="hero-inner">
       <span class="hero-tag">LIMITED DROP 2025</span>
       <h2 class="hero-title">
-        STREET<br />
-        <span>JERSEYS</span>
+        11CODE<br />
+        <span>STORE</span>
       </h2>
       <p class="hero-desc">
-        Premium football jerseys inspired by culture, legacy & street style.
+        Premium streetwear & football-inspired essentials.<br/>
+        Built on culture, attitude, and modern street style.
       </p>
       <div class="hero-actions">
-        <a href="shop.html" class="btn btn-primary">Shop Collection</a>
-        <a href="shop.html" class="btn btn-secondary">Explore Drops</a>
+        <a href="shop.html" class="btn btn-primary">Shop Now</a>
+        <a href="shop.html" class="btn btn-secondary">View Collection</a>
       </div>
     </div>
   </section>
@@ -582,35 +583,8 @@
   <section class="section">
     <h3 class="section-title">Trending Now</h3>
 
-    <div class="product-grid">
-
-      <div class="product-card">
-        <img src="img/home_kit_front.jpg.jpg" alt="Yamal Kit">
-        <div class="product-info">
-          <h4>Yamal Kit</h4>
-          <span class="price">₹750</span>
-          <button class="btn btn-primary add-to-cart">Add to Cart</button>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <img src="img/retro_jersey_front.jpg.jpg" alt="Retro Barca 06">
-        <div class="product-info">
-          <h4>Barcelona 06 Retro</h4>
-          <span class="price">₹899</span>
-          <button class="btn btn-primary add-to-cart">Add to Cart</button>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <img src="img/minimal_training.jpg.jpg" alt="Retro Classic">
-        <div class="product-info">
-          <h4>Retro Classic</h4>
-          <span class="price">₹699</span>
-          <button class="btn btn-primary add-to-cart">Add to Cart</button>
-        </div>
-      </div>
-
+    <div class="product-grid" id="trending-products">
+      <!-- Products will be loaded dynamically from localStorage -->
     </div>
 
     <div class="center">
@@ -881,7 +855,10 @@
     
     // Set profile button with initials
     const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-    node.querySelector(".profile-btn").textContent = initials;
+    // show a clean user icon in the header; keep initials in the menu avatar
+    const profileBtn = node.querySelector(".profile-btn");
+    profileBtn.innerHTML = '<i class="fas fa-user" aria-hidden="true"></i>';
+    profileBtn.setAttribute('aria-label', user.name);
     
     // Set avatar
     node.querySelector(".profile-menu-avatar").textContent = initials;
@@ -1152,7 +1129,81 @@
 <script src="assets/js/ui.js" defer></script>
 <script src="assets/js/cart-utils.js" defer></script>
 <script src="assets/js/home-cart.js" defer></script>
+<script>
+  // Load trending products from localStorage on home page
+  function loadTrendingProducts() {
+    try {
+      const container = document.getElementById('trending-products');
+      if (!container) return;
+
+      const products = JSON.parse(localStorage.getItem('products') || '[]');
+      
+      if (products.length === 0) {
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--muted);">No products available yet. Check back soon!</p>';
+        return;
+      }
+
+      // Show first 3 products or all if less than 3
+      const trendingCount = Math.min(3, products.length);
+      const trendingProducts = products.slice(0, trendingCount);
+
+      container.innerHTML = trendingProducts.map(product => {
+        // Safely escape product name and price
+        const productName = product.name ? String(product.name).replace(/[&<>"']/g, (s) => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;',
+          '"': '&quot;', "'": '&#39;'
+        })[s]) : 'Product';
+        
+        const productImage = product.frontImage || 'img/home_kit_front.jpg.jpg';
+        const productPrice = parseFloat(product.price || 0).toFixed(2);
+        
+        return `
+          <div class="product-card">
+            <img src="${productImage.startsWith('data:') ? productImage : productImage}" 
+                 alt="${productName}" 
+                 onerror="this.src='img/home_kit_front.jpg.jpg';"
+                 style="width: 100%; height: 220px; object-fit: cover;">
+            <div class="product-info">
+              <h4>${productName}</h4>
+              <span class="price">₹${productPrice}</span>
+              <button class="btn btn-primary add-to-cart" data-product-id="${product.id}" data-product-name="${productName}" data-product-price="${productPrice}">Add to Cart</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Attach cart listeners to dynamically created buttons
+      container.querySelectorAll('.add-to-cart').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const productId = this.dataset.productId;
+          const productName = this.dataset.productName;
+          const productPrice = parseFloat(this.dataset.productPrice);
+          
+          const cartItem = {
+            id: productId,
+            name: productName,
+            price: productPrice,
+            size: 'M',
+            quantity: 1,
+            printing: 'none',
+            image: 'img/home_kit_front.jpg.jpg'
+          };
+          
+          addToCart(cartItem);
+          if (typeof showAddToCartToast === 'function') {
+            showAddToCartToast(cartItem);
+          }
+        });
+      });
+    } catch (error) {
+      console.error('Error loading trending products:', error);
+    }
+  }
+
+  // Load on DOM ready
+  document.addEventListener('DOMContentLoaded', loadTrendingProducts);
 </script>
+
 <script>
   (function(){
     try {

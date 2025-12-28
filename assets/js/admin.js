@@ -571,8 +571,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const div = document.createElement('div');
                 div.style.cssText = 'padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all 0.2s;';
                 div.innerHTML = `
-                    <strong style="color:#fff;">${product.name}</strong>
-                    <div style="font-size:0.8rem;color:var(--muted);">ID: ${product.id} | Price: ₹${product.price}</div>
+                    <strong style="color:#fff;">${escapeHtml(product.name)}</strong>
+                    <div style="font-size:0.8rem;color:var(--muted);">ID: ${escapeHtml(product.id)} | Price: ₹${parseFloat(product.price || 0).toFixed(2)}</div>
                 `;
                 div.addEventListener('mouseover', () => {
                     div.style.background = 'rgba(229,21,43,0.2)';
@@ -672,8 +672,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const stockStatus = product.outOfStock ? '🔴 Out of Stock' : '🟢 In Stock';
                 div.style.cssText = 'padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all 0.2s;';
                 div.innerHTML = `
-                    <strong style="color:#fff;">${product.name}</strong>
-                    <div style="font-size:0.8rem;color:var(--muted);">ID: ${product.id} | ${stockStatus}</div>
+                    <strong style="color:#fff;">${escapeHtml(product.name)}</strong>
+                    <div style="font-size:0.8rem;color:var(--muted);">ID: ${escapeHtml(product.id)} | ${stockStatus}</div>
                 `;
                 div.addEventListener('mouseover', () => {
                     div.style.background = 'rgba(243,156,18,0.2)';
@@ -801,10 +801,25 @@ document.addEventListener('DOMContentLoaded', () => {
             matches.forEach(product => {
                 const div = document.createElement('div');
                 const unavailableSizes = product.unavailableSizes ? product.unavailableSizes.join(', ') : 'None';
-                div.style.cssText = 'padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all 0.2s;';
+                div.style.cssText = 'padding:12px;background:rgba(255,255,255,0.05);border-radius:6px;margin-bottom:8px;cursor:pointer;border:1px solid transparent;transition:all 0.2s;';
+                
+                let sizeButtonsHtml = '';
+                if (product.unavailableSizes && product.unavailableSizes.length > 0) {
+                    sizeButtonsHtml = `
+                        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
+                            ${product.unavailableSizes.map(size => `
+                                <button class="restore-size-btn" data-product-id="${escapeHtml(product.id)}" data-size="${escapeHtml(size)}" style="padding:4px 10px;font-size:0.75rem;background:rgba(52,152,219,0.3);border:1px solid rgba(52,152,219,0.5);color:#3498db;border-radius:4px;cursor:pointer;transition:all 0.2s;">
+                                    ${escapeHtml(size)} ×
+                                </button>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                
                 div.innerHTML = `
-                    <strong style="color:#fff;">${product.name}</strong>
-                    <div style="font-size:0.8rem;color:var(--muted);">ID: ${product.id} | Unavailable: ${unavailableSizes}</div>
+                    <strong style="color:#fff;">${escapeHtml(product.name)}</strong>
+                    <div style="font-size:0.8rem;color:var(--muted);">ID: ${escapeHtml(product.id)} | Unavailable: ${escapeHtml(unavailableSizes)}</div>
+                    ${sizeButtonsHtml}
                 `;
                 div.addEventListener('mouseover', () => {
                     div.style.background = 'rgba(52,152,219,0.2)';
@@ -814,7 +829,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     div.style.background = 'rgba(255,255,255,0.05)';
                     div.style.borderColor = 'transparent';
                 });
-                div.addEventListener('click', () => {
+                div.addEventListener('click', (evt) => {
+                    // Ignore clicks on restore buttons
+                    if (evt.target.classList.contains('restore-size-btn')) return;
+                    
                     selectedSizeProduct = product;
                     sizeProductNameInput.value = product.name;
                     sizeSearchResults.innerHTML = '';
@@ -876,6 +894,45 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // RESTORE / REMOVE SIZE FROM UNAVAILABLE LIST
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('restore-size-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const productId = e.target.dataset.productId;
+            const size = e.target.dataset.size;
+            
+            let products = JSON.parse(localStorage.getItem('products') || '[]');
+            const product = products.find(p => p.id === productId);
+            
+            if (product && product.unavailableSizes) {
+                product.unavailableSizes = product.unavailableSizes.filter(s => s !== size);
+                localStorage.setItem('products', JSON.stringify(products));
+                
+                // Log event
+                const event = {
+                    timestamp: new Date().toISOString(),
+                    type: 'Size Restored',
+                    data: `${product.name} - Size ${size} restored to available`
+                };
+                let events = JSON.parse(localStorage.getItem('events') || '[]');
+                events.push(event);
+                localStorage.setItem('events', JSON.stringify(events));
+                
+                showManageMessage(sizeMessage, `✓ Size ${size} restored for "${product.name}"!`, 'success');
+                sizeProductNameInput.value = '';
+                sizeSearchResults.innerHTML = '';
+                selectedSizeProduct = null;
+                markSizeUnavailableBtn.disabled = true;
+                unavailableSizeInput.value = '';
+                
+                refreshEverything();
+                renderStoredProductsPreview();
+            }
+        }
+    }, true); // Use capture phase to intercept before parent
 
     // ===========================================
     // CONTACT DETAILS (ADMIN)

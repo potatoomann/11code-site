@@ -10,6 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
       header.classList.toggle('nav-open');
     });
 
+    // Close menu when clicking/tapping outside the nav panel (mobile)
+    document.addEventListener('click', (e) => {
+      try {
+        if (!header.classList.contains('nav-open')) return;
+        const target = e.target;
+        // if click is inside the nav or on the toggle, ignore
+        if (nav.contains(target) || navToggle.contains(target)) return;
+        header.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      } catch (err) { /* ignore */ }
+    });
+
     // Close menu when a nav link is clicked (mobile)
     nav.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {

@@ -7,9 +7,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const shippingCost = 60;
     const cartItemsContainer = document.getElementById('cart-items-container');
     
+    // XSS Protection: Escape HTML special characters
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>"']/g, (s) => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        })[s]);
+    }
+    
     // Load cart from localStorage
     function loadCart() {
-        const cart = getCart();
+        let cart = getCart();
+        
+        // Filter out null/invalid items
+        cart = cart.filter(item => item && item.name && item.price !== undefined && item.quantity !== undefined);
+        
+        // Save cleaned cart back to localStorage
+        if (cart.length < getCart().length) {
+            saveCart(cart);
+        }
         
         if (cart.length === 0) {
             cartItemsContainer.innerHTML = `
@@ -25,18 +45,39 @@ document.addEventListener('DOMContentLoaded', () => {
         cartItemsContainer.innerHTML = cart.map((item, index) => {
             let customizationText = '';
             if (item.printing === 'pre-printed') {
-                customizationText = `Player: ${item.customization}`;
+                customizationText = `Player: ${escapeHtml(item.customization)}`;
             } else if (item.printing === 'custom') {
-                const [name, number] = item.customization.split(' ');
-                customizationText = `Name: ${name} | Number: ${number}`;
+                const [name, number] = (item.customization || ' ').split(' ');
+                customizationText = `Name: ${escapeHtml(name)} | Number: ${escapeHtml(number)}`;
+            }
+            
+            // Try to get image from:
+            // 1. Item's own image property (passed from shop-cart.js)
+            // 2. Look up product from stored products to get frontImage
+            // 3. Default fallback
+            let imageSrc = item.image;
+            if (!imageSrc || !imageSrc.trim()) {
+                try {
+                    const storedProducts = JSON.parse(localStorage.getItem('products') || '[]');
+                    const product = storedProducts.find(p => p.name === item.name);
+                    if (product && (product.frontImage || product.image)) {
+                        imageSrc = product.frontImage || product.image;
+                    }
+                } catch (e) {
+                    console.warn('Error fetching stored product image', e);
+                }
+            }
+            // Final fallback
+            if (!imageSrc || !imageSrc.trim()) {
+                imageSrc = 'img/home_kit_front.jpg.jpg';
             }
 
             return `
                 <div class="cart-item" data-index="${index}">
-                    <img src="${item.image}" alt="${item.name}">
+                    <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(item.name)}" onerror="this.src='img/home_kit_front.jpg.jpg';" style="width:100px;height:100px;object-fit:cover;border-radius:8px;">
                     <div class="item-details">
-                        <h4>${item.name}${item.printing !== 'none' ? ` (${item.printing === 'pre-printed' ? 'Pre-Printed' : 'Custom Print'})` : ''}</h4>
-                        <p>Size: ${item.size}${customizationText ? ` | ${customizationText}` : ''}</p>
+                        <h4>${escapeHtml(item.name)}${item.printing !== 'none' ? ` (${escapeHtml(item.printing === 'pre-printed' ? 'Pre-Printed' : 'Custom Print')})` : ''}</h4>
+                        <p>Size: ${escapeHtml(item.size)}${customizationText ? ` | ${customizationText}` : ''}</p>
                     </div>
                     <div class="item-quantity">
                         <label>Qty:</label>
@@ -75,11 +116,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to calculate and update the totals
     window.updateCartTotal = function() {
-        const cart = getCart();
+        let cart = getCart();
+        
+        // Filter out null/invalid items for calculation
+        cart = cart.filter(item => item && item.price !== undefined && item.quantity !== undefined);
+        
         let subtotal = 0;
         
         cart.forEach(item => {
-            subtotal += item.price * item.quantity;
+            subtotal += (item.price || 0) * (item.quantity || 1);
         });
 
         // Update summary section

@@ -104,6 +104,18 @@
 
     <script src="assets/js/ui.js" defer></script>
     <script>
+        // XSS Protection: Escape HTML special characters
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"']/g, (s) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[s]);
+        }
+        
         // Render last order stored in sessionStorage
         document.addEventListener('DOMContentLoaded', ()=>{
             const raw = sessionStorage.getItem('lastOrder');
@@ -120,14 +132,14 @@
                     netbanking: '<svg width="18" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="6" width="20" height="2" fill="#444"></rect></svg>',
                     cod: '<svg width="18" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="6" width="20" height="10" fill="#ffd166"></rect></svg>'
                 };
-                document.getElementById('conf-method').innerHTML = `${icons[m] || ''} ${m.toUpperCase()}`;
+                document.getElementById('conf-method').innerHTML = `${icons[m] || ''} ${escapeHtml(m.toUpperCase())}`;
                 // Show receipt delivery summary if available
                 if(order.receipts){
                     const receiptsEl = document.createElement('div');
                     receiptsEl.className = 'receipt-summary';
                     const parts = [];
                     if(order.receipts.whatsapp) parts.push('WhatsApp');
-                    receiptsEl.innerHTML = `<p><strong>Receipt sent via:</strong> ${parts.length ? parts.join(', ') : 'None'}</p>`;
+                    receiptsEl.innerHTML = `<p><strong>Receipt sent via:</strong> ${escapeHtml(parts.length ? parts.join(', ') : 'None')}</p>`;
                     document.querySelector('.order-details-summary').appendChild(receiptsEl);
                 }
                 // Optionally remove lastOrder after rendering

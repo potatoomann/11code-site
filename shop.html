@@ -37,8 +37,10 @@
     nav { flex:1;display:flex;align-items:center;justify-content:flex-end; }
     .nav-toggle {
       display:none;background:none;border:0;color:#fff;font-size:1.6rem;
-      cursor:pointer;padding:6px 10px;border-radius:4px;
+      cursor:pointer;padding:6px 10px;border-radius:4px;line-height:1;
     }
+    .nav-toggle .nav-icon{display:inline-block;width:28px;height:18px;position:relative}
+    .nav-toggle .nav-icon i{display:block;height:2px;background:#111;border-radius:2px;margin:4px 0}
     nav ul {
       list-style:none;display:flex;gap:18px;margin:0;padding:0;align-items:center;
     }
@@ -52,15 +54,22 @@
     @media (max-width:768px){
       header { padding:14px 16px; }
       .nav-toggle {
-        display:block;position:absolute;top:12px;right:20px;z-index:30;
+        display:block;position:absolute;top:12px;right:20px;z-index:60;
+        /* pill look */background:#fff;color:#111;padding:8px 12px;border-radius:20px;font-size:1.0rem;
+        box-shadow:0 6px 18px rgba(0,0,0,0.35);
       }
       nav { width:100%;justify-content:flex-start; }
+      /* mobile: center a compact panel instead of inline dropdown */
       nav ul {
-        display:none;flex-direction:column;gap:10px;padding:12px 5%;
-        background:#000;border-radius:6px;margin-top:48px;
+        display:none;flex-direction:column;gap:14px;padding:22px 18px;
+        background:#000;border-radius:10px;margin:0 auto;width:84%;max-width:340px;
+        position:absolute;top:76px;left:50%;transform:translateX(-50%);
+        box-shadow:0 18px 40px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03);
       }
       header.nav-open nav ul { display:flex; }
-      nav ul li a { display:block;padding:12px 15px;color:#fff; }
+      nav ul li a { display:block;padding:12px 15px;color:#fff;text-align:center; }
+      /* subtle backdrop when open */
+      header.nav-open::before{ content:'';position:fixed;inset:0;background:linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.6));z-index:50; }
     }
 
     .shop-page {
@@ -114,8 +123,9 @@
 
     @media (max-width:768px){
       .shop-page { padding:20px 5%; }
-      .product-grid { grid-template-columns:1fr;gap:16px; }
-      .product-card img { height:200px; }
+      /* Use two columns on typical phones to match compact grid layout */
+      .product-grid { grid-template-columns: repeat(2, minmax(140px, 1fr)); gap:12px; }
+      .product-card img { height:160px; }
     }
     </style>
 
@@ -126,12 +136,13 @@
 <body>
     <header>
         <h1>11 Code</h1>
-        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation">☰</button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation"><span class="nav-icon" aria-hidden="true"><i></i><i></i><i></i></span></button>
         <nav id="primary-navigation">
             <ul>
               <li><a href="index.html">Home</a></li>
               <li><a href="shop.html" class="active">Shop Jerseys</a></li>
               <li><a href="#">Contact</a></li>
+              <li><a href="admin.html">Profile</a></li>
               <li><a href="cart.html">🛒 Cart (0)</a></li>
                 <!-- Admin hidden — open via Ctrl+Alt+A or call `window.openAdminModal()` -->
             </ul>
@@ -146,55 +157,7 @@
         </div>
 
         <div class="product-grid" id="product-grid">
-
-            <div class="product-card">
-                <img src="img/home_kit_front.jpg.jpg" alt="Yamal's Kit" loading="lazy">
-                <div class="product-info">
-                    <h3>Yamal's Kit</h3>
-                    <p class="price">₹750</p>
-                    <div class="actions">
-                      <a href="product-detail.html?id=001" class="btn btn-secondary">View Details</a>
-                      <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="img/retro_jersey_front.jpg.jpg" alt="Retro Barcelona '06 Home" loading="lazy">
-                <div class="product-info">
-                    <h3>Retro Barcelona '06 Home</h3>
-                    <p class="price">₹899</p>
-                    <div class="actions">
-                      <a href="product-detail.html?id=002" class="btn btn-secondary">View Details</a>
-                      <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="img/minimal_training.jpg.jpg" alt="Retro Classic Jersey" loading="lazy">
-                <div class="product-info">
-                    <h3>Retro Classic Jersey</h3>
-                    <p class="price">₹699</p>
-                    <div class="actions">
-                      <a href="product-detail.html?id=004" class="btn btn-secondary">View Details</a>
-                      <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img src="img/ac_milan_2007.jpg.jpg" alt="AC Milan 2007 Final Kit" loading="lazy">
-                <div class="product-info">
-                    <h3>AC Milan 2007 Kaka Kit</h3>
-                    <p class="price">₹1,199</p>
-                    <div class="actions">
-                      <a href="product-detail.html?id=007" class="btn btn-secondary">View Details</a>
-                      <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Products will be loaded from localStorage via admin panel or JavaScript -->
         </div>
     </main>
 

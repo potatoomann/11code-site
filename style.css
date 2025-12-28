@@ -7,6 +7,56 @@
   --radius: 14px;
 }
 
+/* ANIMATIONS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(229, 21, 43, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(229, 21, 43, 0);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -17,6 +67,7 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
+  animation: fadeIn 0.4s ease;
 }
 
 /* Generic helpers */
@@ -179,7 +230,7 @@ body {
 
 /* HERO */
 .hero {
-  min-height: 75vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,6 +238,8 @@ body {
     radial-gradient(60% 40% at 50% 0%, rgba(229,21,43,0.15), transparent 60%),
     linear-gradient(180deg, #000, #0b0b0b);
   text-align: center;
+  padding: 40px 20px;
+  animation: fadeInUp 0.6s ease 0.2s both;
 }
 
 .hero-inner {
@@ -198,30 +251,81 @@ body {
   color: var(--accent);
   font-size: 0.85rem;
   letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  animation: fadeInUp 0.6s ease 0.3s both;
 }
 
 .hero-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(64px, 14vw, 180px);
-  line-height: 0.9;
-  margin: 20px 0;
+  font-size: clamp(72px, 15vw, 200px);
+  line-height: 1.1;
+  margin: 24px 0;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  animation: fadeInUp 0.6s ease 0.4s both;
 }
 
 .hero-title span {
   color: var(--accent);
+  display: block;
 }
 
 .hero-desc {
-  max-width: 520px;
-  margin: 0 auto 28px;
+  max-width: 600px;
+  margin: 24px auto 32px;
   color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+  animation: fadeInUp 0.6s ease 0.5s both;
 }
 
 .hero-actions {
   display: flex;
   justify-content: center;
-  gap: 14px;
+  gap: 16px;
   flex-wrap: wrap;
+  margin-top: 32px;
+  animation: fadeInUp 0.6s ease 0.6s both;
+}
+
+/* TAGLINE SECTION */
+.tagline-section {
+  padding: 80px 20px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+  border-top: 1px solid rgba(229,21,43,0.1);
+  border-bottom: 1px solid rgba(229,21,43,0.1);
+}
+
+.tagline-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 12vw, 120px);
+  font-weight: 900;
+  margin: 0 0 24px 0;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.tagline-title span {
+  color: var(--accent);
+  display: inline;
+}
+
+.tagline-subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.tagline-accent {
+  color: var(--accent);
+  font-weight: 700;
 }
 
 /* BUTTONS */
@@ -329,9 +433,27 @@ body {
 }
 
 /* MOBILE (global nav fallback) */
+
+/* small inline burger icon for toggle buttons */
+.nav-toggle .nav-icon{display:inline-block;width:28px;height:18px;position:relative}
+.nav-toggle .nav-icon i{display:block;height:2px;background:#111;border-radius:2px;margin:4px 0;width:18px}
+
 @media (max-width: 768px) {
   .nav ul {
     display: none;
+  }
+
+  /* pill look for toggle on mobile */
+  .nav-toggle{
+    display:inline-flex;align-items:center;justify-content:center;border-radius:20px;background:#fff;color:#111;padding:8px 12px;border:0;width:auto;height:auto;box-shadow:0 6px 18px rgba(0,0,0,0.35);z-index:60}
+
+  /* Compact product grid on phones: 2 columns */
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .product-card img {
+    height: 160px;
   }
 }
 

@@ -4,12 +4,13 @@
 // ===========================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Product data mapping (matching product-detail.js)
+    // Hardcoded product data mapping
     const PRODUCTS = {
         '001': { name: "Yamal's Kit", price: 750, image: 'img/home_kit_front.jpg.jpg' },
         '002': { name: "Retro Barcelona '06 Home", price: 899, image: 'img/retro_jersey_front.jpg.jpg' },
         '004': { name: 'Retro Classic Jersey', price: 699, image: 'img/minimal_training.jpg.jpg' },
-        '007': { name: 'AC Milan 2007 Kaka Kit', price: 1199, image: 'img/ac_milan_2007.jpg.jpg' }
+        '007': { name: 'AC Milan 2007 Kaka Kit', price: 1199, image: 'img/ac_milan_2007.jpg.jpg' },
+        '008': { name: 'neymar brazil jersey (Custom Print)', price: 550, image: 'img/home_kit_front.jpg.jpg' }
     };
 
     // Handle Add to Cart buttons
@@ -23,13 +24,26 @@ document.addEventListener('DOMContentLoaded', () => {
             if (productLink) {
                 const url = new URL(productLink.href, window.location.origin);
                 const productId = url.searchParams.get('id') || '001';
-                const product = PRODUCTS[productId] || PRODUCTS['001'];
                 
-                // For quick add, use default values
+                // Try to get product from localStorage first (for admin-added products)
+                let product = null;
+                try {
+                    const storedProducts = JSON.parse(localStorage.getItem('products') || '[]');
+                    product = storedProducts.find(p => p.id === productId);
+                } catch (e) {
+                    console.warn('Error fetching stored products', e);
+                }
+                
+                // Fall back to hardcoded products if not found
+                if (!product) {
+                    product = PRODUCTS[productId] || PRODUCTS['001'];
+                }
+                
+                // Build cart item with image from product
                 const cartItem = {
                     id: productId,
                     name: product.name,
-                    image: product.image,
+                    image: product.image || product.frontImage, // Use frontImage if available from admin
                     size: 'M', // Default size
                     printing: 'none',
                     customization: '',

@@ -7,6 +7,18 @@
 
 const SHIPPING_COST = 60; // updated shipping charge
 
+// XSS Protection: Escape HTML special characters
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>"']/g, (s) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[s]);
+}
+
 function formatINR(n){
     return `₹${n.toLocaleString('en-IN')}`;
 }
@@ -290,7 +302,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
             netbanking: '<svg width="20" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="6" width="20" height="2" fill="#444"></rect></svg>',
             cod: '<svg width="20" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="6" width="20" height="10" fill="#ffd166"></rect></svg>'
         };
-        modalMethod.innerHTML = `${icons[method] || ''} <strong>${method.toUpperCase()}</strong>`;
+        modalMethod.innerHTML = `${icons[method] || ''} <strong>${escapeHtml(method.toUpperCase())}</strong>`;
         modalSubtotal.textContent = `Subtotal: ${formatINR(amounts.subtotal)}`;
         modalShipping.textContent = `Shipping: ${formatINR(amounts.shipping)}`;
         modalTotal.textContent = formatINR(amounts.total);
