@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - Yamal Kit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+    <!-- Shared critical CSS for header/nav and basic layout -->
+    <style>
+    :root { --bg:#070707;--text:#e9e9e9;--accent:#e5152b;--max-width:1100px;--transition-fast:0.18s; }
+    html { font-size:clamp(15px,1.6vw,18px); -webkit-text-size-adjust:100%; }
+    body {
+      margin:0;padding:0;font-family:'Montserrat',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
+      background-color:var(--bg);color:var(--text);line-height:1.55;
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+    header {
+      background:transparent;color:#fff;border-bottom:1px solid rgba(255,255,255,0.04);
+      max-width:var(--max-width);margin:0 auto;padding:16px 20px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;box-sizing:border-box;
+      position:relative;
+    }
+    header h1 {
+      margin:0;color:#fff;font-weight:800;font-family:'Bebas Neue','Oswald',sans-serif;
+      font-size:clamp(1.8rem,3vw,2.6rem);letter-spacing:4px;text-transform:uppercase;
+      transition:letter-spacing var(--transition-fast) ease,text-shadow var(--transition-fast) ease,color var(--transition-fast) ease;
+    }
+    nav { flex:1;display:flex;align-items:center;justify-content:flex-end; }
+    .nav-toggle {
+      display:none;background:none;border:0;color:#fff;font-size:1.6rem;
+      cursor:pointer;padding:6px 10px;border-radius:4px;
+    }
+    nav ul {
+      list-style:none;display:flex;gap:18px;margin:0;padding:0;align-items:center;
+    }
+    nav ul li a {
+      color:#e9e9e9;text-decoration:none;padding:6px 12px;border-radius:4px;
+      transition:color 0.18s ease,transform 0.12s ease;
+      font-weight:500;text-transform:uppercase;letter-spacing:1px;font-size:0.9rem;
+    }
+    nav ul li a:hover,nav ul li a.active { color:var(--accent);transform:translateY(-2px); }
+
+    @media (max-width:768px){
+      header { padding:14px 16px; }
+      .nav-toggle {
+        display:block;position:absolute;top:12px;right:20px;z-index:30;
+      }
+      nav { width:100%;justify-content:flex-start; }
+      nav ul {
+        display:none;flex-direction:column;gap:10px;padding:12px 5%;
+        background:#000;border-radius:6px;margin-top:48px;
+      }
+      header.nav-open nav ul { display:flex; }
+      nav ul li a { display:block;padding:12px 15px;color:#fff; }
+    }
+    </style>
+
+    <!-- Async main stylesheet -->
+    <link rel="preload" href="style.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="style.css"></noscript>
+</head>
+<body>
+    <header>
+        <h1>11 Code</h1>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation">☰</button>
+        <nav id="primary-navigation">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop Jerseys</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="cart.html">🛒 Cart (0)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="product-detail-container">
+        
+        <section class="product-images">
+            
+            <div class="main-image-container">
+                <img id="product-main-image" src="img/home_kit_front.jpg.jpg" alt="Front view of Yamal Kit" loading="eager">
+                
+                <div class="custom-overlay" id="custom-overlay" style="display: none;">
+                    <span id="display-name" class="custom-name">NAME</span>
+                    <span id="display-number" class="custom-number">11</span>
+                </div>
+            </div>
+
+            <div class="thumbnail-selector">
+                <img src="img/home_kit_front.jpg.jpg" alt="Front View" class="thumbnail active" data-view="front" loading="lazy">
+                <img src="img/home_kit_back.jpg.png" alt="Back View" class="thumbnail" data-view="back" loading="lazy">
+            </div>
+        </section>
+
+        <section class="product-details">
+            <h2>Yamal Kit</h2>
+            <p>Official 2025/26 Home Kit. Crafted from lightweight, breathable, and sustainable recycled polyester. Perfect for the pitch or the streets.</p>
+            <p class="detail-price">₹750</p>
+
+            <div class="customization-options">
+                <form id="product-form">
+                    <div class="form-group">
+                        <label for="size">Size</label>
+                        <select id="size" required>
+                            <option value="">Select Size</option>
+                            <option value="S">Small (S)</option>
+                            <option value="M">Medium (M)</option>
+                            <option value="L">Large (L)</option>
+                            <option value="XL">Extra Large (XL)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary add-to-cart-btn-detail">Add to Cart</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 11 Code. All rights reserved.</p>
+    </footer>
+
+    <script src="assets/js/ui.js" defer></script>
+    <script src="assets/js/cart-utils.js"></script>
+    <script src="assets/js/product-detail.js" defer></script>
+</body>
+</html>

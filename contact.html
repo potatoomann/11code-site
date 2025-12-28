@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact — 11 Code</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .contact-page { max-width:1100px;margin:40px auto;padding:20px; }
+    .contact-card { background:linear-gradient(180deg,#0f0f0f,#0a0a0a);padding:24px;border-radius:12px;border:1px solid rgba(255,255,255,0.04); }
+    .contact-card h2{ margin:0 0 12px;font-family:'Bebas Neue',sans-serif;letter-spacing:3px }
+    .contact-list { display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px }
+    .contact-item { background:rgba(255,255,255,0.02);padding:14px;border-radius:10px }
+    @media (max-width:768px){ .contact-list{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="logo">11 CODE</h1>
+  </header>
+  <main class="contact-page">
+    <div class="contact-card">
+      <h2>Get In Touch</h2>
+      <p class="muted">Questions about an order, collaboration or wholesale? Drop us a message and we'll reply within 48 hours.</p>
+      <div class="contact-list">
+        <div class="contact-item">
+          <strong>Email</strong>
+          <p class="muted" id="contact-email-display">support@11code.example</p>
+        </div>
+        <div class="contact-item">
+          <strong>Phone</strong>
+          <p class="muted" id="contact-phone-display">+91 98765 43210</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer"><p>© 2025 11 Code</p></footer>
+  <script>
+    (function(){
+      try {
+        const c = JSON.parse(localStorage.getItem('siteContact') || '{}');
+        if (c.email) document.getElementById('contact-email-display').textContent = c.email;
+        if (c.phone) document.getElementById('contact-phone-display').textContent = c.phone;
+      } catch(e) { /* ignore */ }
+    })();
+  </script>
+</body>
+</html>

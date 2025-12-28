@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Dashboard — 11 Code</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../style.css">
+
+<style>
+.admin-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 20px 100px;
+}
+
+.admin-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.admin-header h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 6px;
+  font-size: 4.2rem;
+  margin: 0;
+}
+
+.admin-header p {
+  color: var(--muted);
+  max-width: 600px;
+  margin: 10px auto 0;
+}
+
+/* make the top area feel like a hero */
+.site-header {
+  background: linear-gradient(180deg, rgba(0,0,0,0.9), transparent);
+  border-bottom: none;
+}
+
+.admin-wrapper {
+  background: radial-gradient(1000px 300px at 50% 0%, rgba(229,21,43,0.04), transparent 20%);
+}
+
+/* Stats */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: linear-gradient(180deg, #111111, #0b0b0b);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+}
+
+.stat-card h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.stat-card .value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 12px 0;
+}
+
+.stat-card .sub {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Buttons */
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.admin-btn {
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-btn:hover {
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-2px);
+}
+
+.admin-btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(229,21,43,0.3);
+}
+
+.admin-btn.primary:hover {
+  background: #c41224;
+  border-color: #c41224;
+  box-shadow: 0 6px 16px rgba(229,21,43,0.4);
+}
+
+/* Charts */
+.admin-charts {
+  margin-bottom: 40px;
+}
+
+.chart-card {
+  background: #0c0c0c;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.chart-card h4 {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* Events */
+.events-card {
+  background: #0c0c0c;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.events-card h4 {
+  margin: 0 0 14px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.events-table th,
+.events-table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .admin-charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Add Product Form */
+.add-product-section {
+  margin-bottom: 40px;
+}
+
+.product-form {
+  margin-top: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.03);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(255,255,255,0.35);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 0 0 3px rgba(229,21,43,0.15);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+  font-style: italic;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-message {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  animation: slideDown 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.form-message.success {
+  background: linear-gradient(135deg, rgba(46,204,113,0.15), rgba(46,204,113,0.05));
+  border: 1px solid rgba(46,204,113,0.4);
+  border-left-color: #2ecc71;
+  color: #2ecc71;
+  box-shadow: 0 4px 12px rgba(46,204,113,0.1);
+}
+
+.form-message.error {
+  background: linear-gradient(135deg, rgba(229,21,43,0.15), rgba(229,21,43,0.05));
+  border: 1px solid rgba(229,21,43,0.4);
+  border-left-color: #e5152b;
+  color: #ff6b7a;
+  box-shadow: 0 4px 12px rgba(229,21,43,0.1);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* File Upload Drag-Drop */
+.file-upload-zone {
+  border: 2px dashed rgba(255,255,255,0.2);
+  border-radius: 10px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(255,255,255,0.01);
+}
+
+.file-upload-zone:hover,
+.file-upload-zone.dragover {
+  border-color: var(--accent);
+  background: rgba(229,21,43,0.05);
+}
+
+.file-upload-zone input[type="file"] {
+  display: none;
+}
+
+.upload-icon {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.upload-text {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.upload-text strong {
+  color: var(--text);
+}
+
+.file-selected {
+  color: #2ecc71;
+  margin-top: 8px;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions .admin-btn {
+    width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <h1 class="logo">11 CODE</h1>
+  <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+  <nav class="nav">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../shop.html">Shop</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../cart.html">🛒 Cart</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="admin-wrapper">
+
+  <div class="admin-header">
+    <h2>Admin Dashboard</h2>
+    <p>Overview of store activity and cart behavior</p>
+  </div>
+
+  <!-- STATS -->
+  <section class="admin-stats">
+    <div class="stat-card">
+      <h4>Total Products</h4>
+      <div id="total-products" class="value">—</div>
+      <div class="sub">Detected from shop</div>
+    </div>
+
+    <div class="stat-card">
+      <h4>Active Cart Items</h4>
+      <div id="cart-count" class="value">—</div>
+      <div id="cart-total" class="sub">Total: ₹—</div>
+      <div class="admin-actions">
+        <button id="clear-cart" class="admin-btn">Clear Cart</button>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <h4>Events</h4>
+      <div id="events-count" class="value">—</div>
+      <div class="admin-actions">
+        <button id="refresh" class="admin-btn primary">Refresh</button>
+        <button id="clear-events" class="admin-btn">Clear Events</button>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <h4>Storage Usage</h4>
+      <div id="storage-usage" class="value">—</div>
+      <div id="storage-sub" class="sub">—</div>
+      <div class="admin-actions">
+        <button id="check-storage" class="admin-btn">Check Status</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADD PRODUCT SECTION -->
+  <section class="add-product-section">
+    <div class="events-card">
+      <h4>Add New Product</h4>
+      
+      <form id="add-product-form" class="product-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="product-id">Product ID *</label>
+            <input type="text" id="product-id" name="id" required placeholder="e.g., 008" pattern="[0-9]+">
+            <small>Unique numeric identifier</small>
+          </div>
+          
+          <div class="form-group">
+            <label for="product-name">Product Name *</label>
+            <input type="text" id="product-name" name="name" required placeholder="e.g., Classic Jersey 2025">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="product-price">Price (₹) *</label>
+            <input type="number" id="product-price" name="price" required placeholder="999" min="0" step="0.01">
+          </div>
+          
+          <div class="form-group">
+            <label>Front Image *</label>
+            <div class="file-upload-zone" id="frontImageZone">
+              <div class="upload-icon">📸</div>
+              <p class="upload-text"><strong>Drag image here</strong> or click to browse</p>
+              <input type="file" id="product-front-image" name="frontImage" accept="image/*" required>
+              <div class="file-selected" id="frontImageName" style="display:none;"></div>
+            </div>
+            <input type="hidden" id="product-front-image-path" name="frontImagePath">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="out-of-stock">Stock</label>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:6px;">
+              <input type="checkbox" id="out-of-stock" name="outOfStock" />
+              <label for="out-of-stock" style="margin:0;color:var(--muted);font-weight:600;">Mark as Out of Stock</label>
+            </div>
+            <small>When checked, product cannot be added to cart</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Back Image (Optional)</label>
+          <div class="file-upload-zone" id="backImageZone">
+            <div class="upload-icon">🖼️</div>
+            <p class="upload-text"><strong>Drag image here</strong> or click to browse</p>
+            <input type="file" id="product-back-image" name="backImage" accept="image/*">
+            <div class="file-selected" id="backImageName" style="display:none;"></div>
+          </div>
+          <input type="hidden" id="product-back-image-path" name="backImagePath">
+        </div>
+
+        <div class="form-group">
+          <label for="product-description">Description</label>
+          <textarea id="product-description" name="description" rows="3" placeholder="Enter product description..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="admin-btn primary">Add Product</button>
+          <button type="button" id="reset-form" class="admin-btn">Clear Form</button>
+        </div>
+      </form>
+
+      <div id="product-form-message" class="form-message" style="display: none;"></div>
+    </div>
+
+    <!-- MANAGE PRODUCTS SECTION -->
+    <div style="margin-top:40px;border-top:1px solid rgba(255,255,255,0.08);padding-top:30px;">
+      <h4 style="margin:0 0 16px;">Manage Existing Products</h4>
+      
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:20px;">
+        <!-- Delete Product -->
+        <div class="events-card" style="background: linear-gradient(135deg, rgba(229,21,43,0.08), rgba(229,21,43,0.02));">
+          <h5 style="margin:0 0 12px;color:#ff6b7a;">🗑️ Delete Product</h5>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label for="delete-product-name">Product Name</label>
+            <input type="text" id="delete-product-name" placeholder="Enter product name..." style="padding:10px;width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);color:#fff;box-sizing:border-box;">
+            <small style="display:block;margin-top:6px;color:rgba(255,255,255,0.5);">Search and delete product by name</small>
+          </div>
+          <div id="delete-search-results" style="margin-bottom:12px;"></div>
+          <button id="delete-product-btn" class="admin-btn" style="background:rgba(229,21,43,0.2);border:1px solid rgba(229,21,43,0.4);color:#ff6b7a;width:100%;">Delete Selected</button>
+          <div id="delete-message" class="form-message" style="display:none;margin-top:10px;"></div>
+        </div>
+
+        <!-- Mark as Out of Stock -->
+        <div class="events-card" style="background: linear-gradient(135deg, rgba(243,156,18,0.08), rgba(243,156,18,0.02));">
+          <h5 style="margin:0 0 12px;color:#f39c12;">📦 Stock Status</h5>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label for="stock-product-name">Product Name</label>
+            <input type="text" id="stock-product-name" placeholder="Enter product name..." style="padding:10px;width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);color:#fff;box-sizing:border-box;">
+            <small style="display:block;margin-top:6px;color:rgba(255,255,255,0.5);">Mark as out of stock or available</small>
+          </div>
+          <div id="stock-search-results" style="margin-bottom:12px;"></div>
+          <div style="display:flex;gap:8px;">
+            <button id="mark-out-of-stock" class="admin-btn" style="flex:1;background:rgba(229,21,43,0.2);border:1px solid rgba(229,21,43,0.4);color:#ff6b7a;">Out of Stock</button>
+            <button id="mark-in-stock" class="admin-btn" style="flex:1;background:rgba(46,204,113,0.2);border:1px solid rgba(46,204,113,0.4);color:#2ecc71;">In Stock</button>
+          </div>
+          <div id="stock-message" class="form-message" style="display:none;margin-top:10px;"></div>
+        </div>
+
+        <!-- Size Not Available -->
+        <div class="events-card" style="background: linear-gradient(135deg, rgba(52,152,219,0.08), rgba(52,152,219,0.02));">
+          <h5 style="margin:0 0 12px;color:#3498db;">📏 Size Availability</h5>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label for="size-product-name">Product Name</label>
+            <input type="text" id="size-product-name" placeholder="Enter product name..." style="padding:10px;width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);color:#fff;box-sizing:border-box;">
+            <small style="display:block;margin-top:6px;color:rgba(255,255,255,0.5);">Mark size as unavailable</small>
+          </div>
+          <div id="size-search-results" style="margin-bottom:12px;"></div>
+          <div style="display:flex;gap:8px;flex-direction:column;">
+            <input type="text" id="unavailable-size" placeholder="e.g., XL, 2XL" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);color:#fff;box-sizing:border-box;">
+            <button id="mark-size-unavailable" class="admin-btn" style="background:rgba(52,152,219,0.2);border:1px solid rgba(52,152,219,0.4);color:#3498db;width:100%;">Mark Size Unavailable</button>
+          </div>
+          <div id="size-message" class="form-message" style="display:none;margin-top:10px;"></div>
+        </div>
+
+        <!-- Contact Details (Admin editable) -->
+        <div class="events-card" style="background: linear-gradient(135deg, rgba(46,204,113,0.06), rgba(46,204,113,0.02));">
+          <h5 style="margin:0 0 12px;color:#2ecc71;">☎️ Contact Details</h5>
+          <div class="form-group" style="margin-bottom:8px;">
+            <label for="contact-email">Email</label>
+            <input type="email" id="contact-email" placeholder="support@example.com" style="padding:10px;width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);color:#fff;box-sizing:border-box;">
+          </div>
+          <div class="form-group" style="margin-bottom:8px;">
+            <label for="contact-phone">Phone</label>
+            <input type="text" id="contact-phone" placeholder="+91 98765 43210" style="padding:10px;width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);color:#fff;box-sizing:border-box;">
+          </div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label for="contact-address">Address (optional)</label>
+            <input type="text" id="contact-address" placeholder="Street, City, Country" style="padding:10px;width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);color:#fff;box-sizing:border-box;">
+          </div>
+          <button id="save-contact-btn" class="admin-btn" style="background:rgba(46,204,113,0.18);border:1px solid rgba(46,204,113,0.36);color:#2ecc71;width:100%;">Save Contact</button>
+          <div id="contact-message" class="form-message" style="display:none;margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:26px;">
+      <h4 style="margin:0 0 12px;">Stored Products Preview</h4>
+      <div id="admin-products-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px"></div>
+    </div>
+  </section>
+
+  <!-- SALES CHART (LAST 7 DAYS) -->
+  <section class="admin-charts">
+    <div class="chart-card">
+      <h4>Product Sales (Last 7 Days)</h4>
+      <canvas id="sales-7d-chart" height="180"></canvas>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section class="events-card">
+    <h4>Recent Events</h4>
+    <table class="events-table" id="events-table">
+      <thead>
+        <tr><th>Time</th><th>Type</th><th>Data</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="3" class="muted">No events yet.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© 2025 11 Code — Admin</p>
+</footer>
+
+<script>
+// File upload drag-and-drop handler
+function setupFileUpload(zoneId, inputId, nameDisplayId) {
+  const zone = document.getElementById(zoneId);
+  const input = document.getElementById(inputId);
+  const nameDisplay = document.getElementById(nameDisplayId);
+
+  // Click to upload
+  zone.addEventListener('click', () => input.click());
+
+  // Drag over
+  ['dragenter', 'dragover'].forEach(event => {
+    zone.addEventListener(event, e => {
+      e.preventDefault();
+      zone.classList.add('dragover');
+    });
+  });
+
+  ['dragleave', 'drop'].forEach(event => {
+    zone.addEventListener(event, () => zone.classList.remove('dragover'));
+  });
+
+  // Drop file
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      input.files = files;
+      updateFileName(input, nameDisplay);
+    }
+  });
+
+  // File input change
+  input.addEventListener('change', () => updateFileName(input, nameDisplay));
+}
+
+function updateFileName(input, display) {
+  if (input.files && input.files.length > 0) {
+    const fileName = input.files[0].name;
+    display.textContent = '✓ ' + fileName;
+    display.style.display = 'block';
+  } else {
+    display.style.display = 'none';
+  }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  setupFileUpload('frontImageZone', 'product-front-image', 'frontImageName');
+  setupFileUpload('backImageZone', 'product-back-image', 'backImageName');
+});
+</script>
+
+<script src="../assets/js/admin-gate.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script src="../assets/js/cart-utils.js" defer></script>
+<script src="../assets/js/admin.js" defer></script>
+
+</body>
+</html>

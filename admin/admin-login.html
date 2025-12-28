@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      background:#070707;
+      color:#fff;
+      font-family: 'Inter', sans-serif;
+    }
+    .login-box{
+      max-width:560px;
+      padding:28px;
+      border-radius:12px;
+      background:var(--card, #0f0f0f);
+      box-shadow:0 12px 40px rgba(0,0,0,0.6);
+      text-align:center;
+    }
+    .login-box h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+      margin: 0 0 16px;
+    }
+    .login-box p {
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 24px;
+    }
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent, #e5152b);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s ease;
+    }
+    .btn:hover {
+      background: #c41224;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <p>Enter your email and password to access the admin dashboard.</p>
+    <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 16px;">
+      <input 
+        id="email" 
+        type="email" 
+        placeholder="Email" 
+        style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-size: 1rem;"
+        autocomplete="email"
+      >
+      <input 
+        id="password" 
+        type="password" 
+        placeholder="Password" 
+        style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-size: 1rem;"
+        autocomplete="current-password"
+      >
+      <button id="ok" class="btn">Login</button>
+    </div>
+    <div id="error" style="margin-top: 16px; color: #ff4444; display: none; font-size: 0.9rem;"></div>
+  </div>
+  <script>
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('ok');
+    const errorDiv = document.getElementById('error');
+
+    function showError(message) {
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+
+    function hideError() {
+      errorDiv.style.display = 'none';
+    }
+
+    async function handleLogin() {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        showError('Please enter both email and password');
+        return;
+      }
+
+      hideError();
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in...';
+
+      try {
+        // Fetch CSRF token first
+        let csrf;
+        try {
+          const csrfResponse = await fetch('/api/csrf');
+          if (!csrfResponse.ok) {
+            throw new Error('Failed to get CSRF token');
+          }
+          csrf = await csrfResponse.json();
+        } catch (e) {
+          console.error('CSRF token error:', e);
+          showError('Failed to initialize security token. Please refresh the page.');
+          return;
+        }
+
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-csrf-token': csrf.csrfToken
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        let data;
+        try {
+          data = await res.json();
+        } catch (e) {
+          // If response is not JSON, it might be an error
+          showError('Server error. Please try again.');
+          return;
+        }
+  
+        if (res.ok && data.ok) {
+          // ✅ redirect to the admin dashboard
+          location.href = '/admin/dashboard';
+        } else {
+          showError(data.error || 'Login failed. Please check your credentials.');
+          passwordInput.value = '';
+          passwordInput.focus();
+        }
+      } catch (e) {
+        console.error('Login error:', e);
+        showError('Login request failed. Please check your connection and try again.');
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
+      }
+    }
+
+    loginBtn.addEventListener('click', handleLogin);
+    
+    // Allow Enter key to submit
+    [emailInput, passwordInput].forEach(input => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          handleLogin();
+        }
+      });
+    });
+  </script>  
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - 11 Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+    <!-- Shared critical CSS for header/nav and basic layout -->
+    <style>
+    :root { --bg:#070707;--text:#e9e9e9;--accent:#e5152b;--max-width:1100px;--transition-fast:0.18s; }
+    html { font-size:clamp(15px,1.6vw,18px); -webkit-text-size-adjust:100%; }
+    body {
+      margin:0;padding:0;font-family:'Montserrat',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
+      background-color:var(--bg);color:var(--text);line-height:1.55;
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+    header {
+      background:transparent;color:#fff;border-bottom:1px solid rgba(255,255,255,0.04);
+      max-width:var(--max-width);margin:0 auto;padding:16px 20px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;box-sizing:border-box;
+      position:relative;
+    }
+    header h1 {
+      margin:0;color:#fff;font-weight:800;font-family:'Bebas Neue','Oswald',sans-serif;
+      font-size:clamp(1.8rem,3vw,2.6rem);letter-spacing:4px;text-transform:uppercase;
+      transition:letter-spacing var(--transition-fast) ease,text-shadow var(--transition-fast) ease,color var(--transition-fast) ease;
+    }
+    nav { flex:1;display:flex;align-items:center;justify-content:flex-end; }
+    .nav-toggle {
+      display:none;background:none;border:0;color:#fff;font-size:1.6rem;
+      cursor:pointer;padding:6px 10px;border-radius:4px;
+    }
+    nav ul {
+      list-style:none;display:flex;gap:18px;margin:0;padding:0;align-items:center;
+    }
+    nav ul li a {
+      color:#e9e9e9;text-decoration:none;padding:6px 12px;border-radius:4px;
+      transition:color 0.18s ease,transform 0.12s ease;
+      font-weight:500;text-transform:uppercase;letter-spacing:1px;font-size:0.9rem;
+    }
+    nav ul li a:hover,nav ul li a.active { color:var(--accent);transform:translateY(-2px); }
+
+    @media (max-width:768px){
+      header { padding:14px 16px; }
+      .nav-toggle {
+        display:block;position:absolute;top:12px;right:20px;z-index:30;
+      }
+      nav { width:100%;justify-content:flex-start; }
+      nav ul {
+        display:none;flex-direction:column;gap:10px;padding:12px 5%;
+        background:#000;border-radius:6px;margin-top:48px;
+      }
+      header.nav-open nav ul { display:flex; }
+      nav ul li a { display:block;padding:12px 15px;color:#fff; }
+    }
+    </style>
+
+    <!-- Async main stylesheet -->
+    <link rel="preload" href="style.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="style.css"></noscript>
+</head>
+<body>
+    <header>
+        <h1>11 Code</h1>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation">☰</button>
+        <nav id="primary-navigation">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop Jerseys</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="cart.html" class="active">🛒 Cart (0)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="cart-container">
+        <h2>Your Shopping Cart</h2>
+
+        <div class="cart-items" id="cart-items-container">
+            <!-- Cart items will be loaded dynamically from localStorage -->
+        </div>
+
+        <div class="cart-summary">
+            <h3>Cart Summary</h3>
+            <div class="summary-line">
+                <span>Items Subtotal:</span>
+                <span id="subtotal">₹2049</span>
+            </div>
+            <div class="summary-line">
+                <span>Shipping (Standard):</span>
+                <span>₹60</span>
+            </div>
+            <div class="summary-line total">
+                <span>Order Total:</span>
+                <span id="grand-total">₹2149</span>
+            </div>
+            <a href="checkout.html" class="btn btn-primary checkout-btn-cart">Proceed to Checkout</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 11 Code. All rights reserved.</p>
+    </footer>
+    
+    <script src="assets/js/ui.js" defer></script>
+    <script src="assets/js/cart-utils.js" defer></script>
+    <script src="assets/cart.js" defer></script>
+</body>
+</html>

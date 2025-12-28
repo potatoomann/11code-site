@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>11 Code | Premium Street Jerseys</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- AUTH + PROFILE STYLES (ADDED) -->
+  <style>
+    .auth-btn {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .auth-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .auth-box {
+      background: #0f0f0f;
+      padding: 24px;
+      border-radius: 12px;
+      width: 340px;
+      color: white;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 16px;
+    }
+
+    .auth-tabs button {
+      flex: 1;
+      padding: 10px;
+      background: #222;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    .auth-tabs button.active {
+      background: white;
+      color: black;
+    }
+
+    .auth-section {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .auth-section.active {
+      display: flex;
+    }
+
+    .auth-section input {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    .auth-section button {
+      padding: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .profile {
+      position: relative;
+    }
+
+    .profile-btn {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .profile-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 28px;
+      background: #111;
+      padding: 12px;
+      border-radius: 8px;
+      min-width: 200px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <h1 class="logo">11 CODE</h1>
+
+  <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+
+  <nav class="nav">
+    <ul>
+      <li><a class="active" href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="cart.html">🛒 Cart</a></li>
+
+      <!-- SIGN UP / PROFILE (ADDED) -->
+      <li id="authArea">
+        <button class="auth-btn" id="openAuth">Sign Up</button>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="hero-tag">LIMITED DROP 2025</span>
+      <h2 class="hero-title">
+        STREET<br />
+        <span>JERSEYS</span>
+      </h2>
+      <p class="hero-desc">
+        Premium football jerseys inspired by culture, legacy & street style.
+      </p>
+      <div class="hero-actions">
+        <a href="shop.html" class="btn btn-primary">Shop Collection</a>
+        <a href="shop.html" class="btn btn-secondary">Explore Drops</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <section class="section">
+    <h3 class="section-title">Trending Now</h3>
+
+    <div class="product-grid">
+
+      <div class="product-card">
+        <img src="img/home_kit_front.jpg.jpg" alt="Yamal Kit">
+        <div class="product-info">
+          <h4>Yamal Kit</h4>
+          <span class="price">₹750</span>
+          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="img/retro_jersey_front.jpg.jpg" alt="Retro Barca 06">
+        <div class="product-info">
+          <h4>Barcelona 06 Retro</h4>
+          <span class="price">₹899</span>
+          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="img/minimal_training.jpg.jpg" alt="Retro Classic">
+        <div class="product-info">
+          <h4>Retro Classic</h4>
+          <span class="price">₹699</span>
+          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="center">
+      <a href="shop.html" class="btn btn-secondary">View All Jerseys →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© 2025 11 Code. All rights reserved.</p>
+</footer>
+
+<!-- AUTH MODAL (ADDED) -->
+<div class="auth-modal" id="authModal">
+  <div class="auth-box">
+
+    <div class="auth-tabs">
+      <button id="signupTab" class="active">Sign Up</button>
+      <button id="signinTab">Sign In</button>
+    </div>
+
+    <!-- SIGN UP -->
+    <div id="signupSection" class="auth-section active">
+      <input id="suName" placeholder="Full Name">
+      <input id="suEmail" placeholder="Email">
+      <input id="suPassword" type="password" placeholder="Password">
+      <button id="createBtn">Create Account</button>
+    </div>
+
+    <!-- SIGN IN -->
+    <div id="signinSection" class="auth-section">
+      <input id="siEmail" placeholder="Email">
+      <input id="siPassword" type="password" placeholder="Password">
+      <button id="loginBtn">Login</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- PROFILE TEMPLATE -->
+<template id="profileTemplate">
+  <div class="profile">
+    <button class="profile-btn">👤</button>
+    <div class="profile-menu">
+      <p class="p-name"></p>
+      <p class="p-email"></p>
+      <button class="logoutBtn">Logout</button>
+    </div>
+  </div>
+</template>
+
+<!-- AUTH SCRIPT (ADDED) -->
+<script>
+  const authModal = document.getElementById("authModal");
+  const authArea = document.getElementById("authArea");
+
+  openAuth.onclick = () => authModal.style.display = "flex";
+  window.onclick = e => { if (e.target === authModal) authModal.style.display = "none"; };
+
+  signupTab.onclick = () => {
+    signupTab.classList.add("active");
+    signinTab.classList.remove("active");
+    signupSection.classList.add("active");
+    signinSection.classList.remove("active");
+  };
+
+  signinTab.onclick = () => {
+    signinTab.classList.add("active");
+    signupTab.classList.remove("active");
+    signinSection.classList.add("active");
+    signupSection.classList.remove("active");
+  };
+
+  createBtn.onclick = () => {
+    const name = suName.value.trim();
+    const email = suEmail.value.trim();
+    const password = suPassword.value;
+    if (!name || !email || !password) return;
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    if (users.some(u => u.email === email)) return;
+
+    users.push({ name, email, password });
+    localStorage.setItem("users", JSON.stringify(users));
+    signinTab.click();
+  };
+
+  loginBtn.onclick = () => {
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const user = users.find(u => u.email === siEmail.value && u.password === siPassword.value);
+    if (!user) return;
+
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+    authModal.style.display = "none";
+    renderProfile();
+  };
+
+  function renderProfile() {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) return;
+
+    authArea.innerHTML = "";
+    const node = profileTemplate.content.cloneNode(true);
+    node.querySelector(".p-name").textContent = user.name;
+    node.querySelector(".p-email").textContent = user.email;
+
+    const menu = node.querySelector(".profile-menu");
+    node.querySelector(".profile-btn").onclick = () =>
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+
+    node.querySelector(".logoutBtn").onclick = () => {
+      localStorage.removeItem("loggedInUser");
+      location.reload();
+    };
+
+    authArea.appendChild(node);
+  }
+
+  renderProfile();
+</script>
+
+<!-- YOUR EXISTING SCRIPTS -->
+<script src="assets/js/admin-gate.js" defer></script>
+<script src="assets/js/ui.js" defer></script>
+<script src="assets/js/cart-utils.js" defer></script>
+<script src="assets/js/home-cart.js" defer></script>
+
+</body>
+</html>

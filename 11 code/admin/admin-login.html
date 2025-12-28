@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="style.css">
+  <style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#070707;color:#fff}.login-box{max-width:560px;padding:28px;border-radius:12px;background:var(--card);box-shadow:0 12px 40px rgba(0,0,0,0.6)}</style>
+</head>
+<body>
+  <div class="login-box">
+    <h2 class="font-bold-sport">Admin Login</h2>
+    <p class="muted">This server enforces login to access the admin dashboard. Enter the admin password.</p>
+    <div style="margin-top:14px;display:flex;gap:8px;align-items:center">
+      <input id="pw" type="Password" placeholder="Password" style="padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;flex:1">
+      <button id="ok" class="btn btn-primary small">Login</button>
+    </div>
+  </div>
+  <script>
+    document.getElementById('ok').addEventListener('click', async () => {
+      const pw = document.getElementById('pw').value || '';
+      try {
+        // Fetch CSRF token first
+        const csrf = await fetch('/api/csrf').then(r => r.json());
+
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-csrf-token': csrf.csrfToken,
+            'x-afraskahn-secret': pw
+          },
+          body: JSON.stringify({ secret: pw })
+        });
+  
+        if (res.ok) {
+          // ✅ redirect to the hidden dashboard route
+          location.href = '/__afraskhan_admin/dashboard';
+        } else {
+          alert('Login failed');
+        }
+      } catch (e) {
+        alert('Login request failed');
+      }
+    });
+  
+    document.getElementById('pw').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('ok').click();
+    });
+  </script>  
+</body>
+</html>

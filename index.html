@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>11 Code | Premium Street Jerseys</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- AUTH + PROFILE STYLES (ADDED) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .auth-btn {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .auth-btn:hover {
+      color: var(--accent, #e5152b);
+    }
+
+    .auth-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      backdrop-filter: blur(4px);
+    }
+
+    .auth-box {
+      background: linear-gradient(180deg, #0f0f0f, #0a0a0a);
+      padding: 32px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      color: white;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.05);
+      position: relative;
+    }
+
+    .auth-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent, #e5152b), #ff4757);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 24px;
+      gap: 8px;
+      background: rgba(255,255,255,0.03);
+      padding: 4px;
+      border-radius: 10px;
+    }
+
+    .auth-tabs button {
+      flex: 1;
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .auth-tabs button i {
+      font-size: 1rem;
+    }
+
+    .auth-tabs button.active {
+      background: var(--accent, #e5152b);
+      color: white;
+      box-shadow: 0 4px 12px rgba(229,21,43,0.3);
+    }
+
+    .auth-section {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .auth-section.active {
+      display: flex;
+    }
+
+    .auth-section .input-group {
+      position: relative;
+    }
+
+    .auth-section .input-group i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.4);
+      font-size: 1rem;
+    }
+
+    .auth-section input {
+      width: 100%;
+      padding: 14px 14px 14px 44px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.3);
+      color: white;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .auth-section input:focus {
+      outline: none;
+      border-color: var(--accent, #e5152b);
+      background: rgba(0,0,0,0.5);
+      box-shadow: 0 0 0 3px rgba(229,21,43,0.1);
+    }
+
+    .auth-section input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+
+    .auth-section button {
+      padding: 14px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      background: var(--accent, #e5152b);
+      color: white;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .auth-section button:hover {
+      background: #c41224;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(229,21,43,0.4);
+    }
+
+    .auth-section button:active {
+      transform: translateY(0);
+    }
+
+    .auth-section button i {
+      font-size: 1rem;
+    }
+
+    .profile {
+      position: relative;
+    }
+
+    .profile-btn {
+      background: linear-gradient(135deg, var(--accent, #e5152b), #ff4757);
+      border: 2px solid rgba(255,255,255,0.1);
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(229,21,43,0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .profile-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(229,21,43,0.5);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .profile-btn:active {
+      transform: scale(0.95);
+    }
+
+    .profile-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: linear-gradient(180deg, #0f0f0f, #0a0a0a);
+      padding: 20px;
+      border-radius: 16px;
+      min-width: 280px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+      animation: slideDown 0.2s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-menu-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 16px;
+    }
+
+    .profile-menu-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent, #e5152b), #ff4757);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: white;
+      box-shadow: 0 2px 8px rgba(229,21,43,0.4);
+    }
+
+    .profile-menu-info {
+      flex: 1;
+    }
+
+    .profile-menu p {
+      margin: 4px 0;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.85rem;
+    }
+
+    .profile-menu .p-name {
+      font-weight: 600;
+      color: white;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .profile-menu .p-email {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+    }
+
+    .profile-menu-address {
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      margin: 12px 0;
+      border-left: 3px solid var(--accent, #e5152b);
+    }
+
+    .profile-menu-address-title {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .profile-menu-address-text {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.4;
+    }
+
+    .profile-menu button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      background: rgba(229,21,43,0.2);
+      border: 1px solid rgba(229,21,43,0.3);
+      color: #e5152b;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .profile-menu-phone {
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      margin: 12px 0;
+      border-left: 3px solid #3498db;
+    }
+
+    .profile-menu-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .profile-action-btn {
+      width: 100%;
+      padding: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.9);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+    }
+
+    .profile-action-btn:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateX(4px);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .profile-menu button:hover {
+      background: rgba(229,21,43,0.3);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(229,21,43,0.2);
+    }
+
+    /* Profile Edit Modals */
+    .profile-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      backdrop-filter: blur(4px);
+    }
+
+    .profile-modal-content {
+      background: linear-gradient(180deg, #0f0f0f, #0a0a0a);
+      padding: 32px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      color: white;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.05);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .profile-modal-content h3 {
+      margin: 0 0 20px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile-modal-content .form-group {
+      margin-bottom: 16px;
+    }
+
+    .profile-modal-content label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      font-weight: 600;
+    }
+
+    .profile-modal-content input,
+    .profile-modal-content select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.3);
+      color: white;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+
+    .profile-modal-content input:focus,
+    .profile-modal-content select:focus {
+      outline: none;
+      border-color: var(--accent, #e5152b);
+      background: rgba(0,0,0,0.5);
+    }
+
+    .profile-modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .profile-modal-actions button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .profile-modal-actions .btn-primary {
+      background: var(--accent, #e5152b);
+      color: white;
+    }
+
+    .profile-modal-actions .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .profile-modal-actions button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    /* Order History Modal */
+    .order-item {
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border-left: 3px solid var(--accent, #e5152b);
+    }
+
+    .order-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .order-item-header h4 {
+      margin: 0;
+      font-size: 1rem;
+      color: white;
+    }
+
+    .order-item-date {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .order-item-products {
+      margin: 12px 0;
+    }
+
+    .order-product {
+      display: flex;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .order-product:last-child {
+      border-bottom: none;
+    }
+
+    .order-product img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .order-product-info {
+      flex: 1;
+    }
+
+    .order-product-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .order-product-details {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .order-item-total {
+      text-align: right;
+      font-weight: 700;
+      color: var(--accent, #e5152b);
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <h1 class="logo">11 CODE</h1>
+
+  <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+
+  <nav class="nav">
+    <ul>
+      <li><a class="active" href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="cart.html">🛒 Cart</a></li>
+
+      <!-- SIGN UP / PROFILE (ADDED) -->
+      <li id="authArea">
+        <button class="auth-btn" id="openAuth">Sign Up</button>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="hero-tag">LIMITED DROP 2025</span>
+      <h2 class="hero-title">
+        STREET<br />
+        <span>JERSEYS</span>
+      </h2>
+      <p class="hero-desc">
+        Premium football jerseys inspired by culture, legacy & street style.
+      </p>
+      <div class="hero-actions">
+        <a href="shop.html" class="btn btn-primary">Shop Collection</a>
+        <a href="shop.html" class="btn btn-secondary">Explore Drops</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <section class="section">
+    <h3 class="section-title">Trending Now</h3>
+
+    <div class="product-grid">
+
+      <div class="product-card">
+        <img src="img/home_kit_front.jpg.jpg" alt="Yamal Kit">
+        <div class="product-info">
+          <h4>Yamal Kit</h4>
+          <span class="price">₹750</span>
+          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="img/retro_jersey_front.jpg.jpg" alt="Retro Barca 06">
+        <div class="product-info">
+          <h4>Barcelona 06 Retro</h4>
+          <span class="price">₹899</span>
+          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="img/minimal_training.jpg.jpg" alt="Retro Classic">
+        <div class="product-info">
+          <h4>Retro Classic</h4>
+          <span class="price">₹699</span>
+          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="center">
+      <a href="shop.html" class="btn btn-secondary">View All Jerseys →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div id="site-contact" style="text-align:center;color:var(--muted);margin-bottom:6px;">Contact: support@11code.example · +91 98765 43210</div>
+  <p>© 2025 11 Code. All rights reserved.</p>
+</footer>
+
+<!-- AUTH MODAL (ADDED) -->
+<div class="auth-modal" id="authModal">
+  <div class="auth-box">
+
+    <div class="auth-tabs">
+      <button id="signupTab" class="active">
+        <i class="fas fa-user-plus"></i>
+        Sign Up
+      </button>
+      <button id="signinTab">
+        <i class="fas fa-sign-in-alt"></i>
+        Sign In
+      </button>
+    </div>
+
+    <!-- SIGN UP -->
+    <div id="signupSection" class="auth-section active">
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input id="suName" type="text" placeholder="Full Name" autocomplete="name">
+      </div>
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input id="suEmail" type="email" placeholder="Email Address" autocomplete="email">
+      </div>
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input id="suPassword" type="password" placeholder="Password" autocomplete="new-password">
+      </div>
+      <button id="createBtn">
+        <i class="fas fa-user-plus"></i>
+        Create Account
+      </button>
+    </div>
+
+    <!-- SIGN IN -->
+    <div id="signinSection" class="auth-section">
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input id="siEmail" type="email" placeholder="Email Address" autocomplete="email">
+      </div>
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input id="siPassword" type="password" placeholder="Password" autocomplete="current-password">
+      </div>
+      <button id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i>
+        Login
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- PROFILE TEMPLATE -->
+<template id="profileTemplate">
+  <div class="profile">
+    <button class="profile-btn"></button>
+    <div class="profile-menu">
+      <div class="profile-menu-header">
+        <div class="profile-menu-avatar"></div>
+        <div class="profile-menu-info">
+          <p class="p-name"></p>
+          <p class="p-email"></p>
+        </div>
+      </div>
+      <div class="profile-menu-address" id="profile-address" style="display: none;">
+        <div class="profile-menu-address-title">
+          <i class="fas fa-map-marker-alt"></i>
+          Shipping Address
+        </div>
+        <div class="profile-menu-address-text" id="profile-address-text"></div>
+      </div>
+      <div class="profile-menu-phone" id="profile-phone" style="display: none;">
+        <div class="profile-menu-address-title">
+          <i class="fas fa-phone"></i>
+          Phone Number
+        </div>
+        <div class="profile-menu-address-text" id="profile-phone-text"></div>
+      </div>
+      <div class="profile-menu-actions">
+        <button class="profile-action-btn" id="editAddressBtn">
+          <i class="fas fa-edit"></i>
+          Edit Address
+        </button>
+        <button class="profile-action-btn" id="editPhoneBtn">
+          <i class="fas fa-phone"></i>
+          Edit Phone
+        </button>
+        <button class="profile-action-btn" id="viewOrdersBtn">
+          <i class="fas fa-shopping-bag"></i>
+          My Orders
+        </button>
+        <button class="profile-action-btn admin-panel-btn" id="adminPanelBtn" style="display: none; background: linear-gradient(135deg, #e5152b, #ff4757);">
+          <i class="fas fa-shield-alt"></i>
+          Admin Panel
+        </button>
+      </div>
+      <button class="logoutBtn">
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </button>
+    </div>
+  </div>
+</template>
+
+<!-- AUTH SCRIPT (ADDED) -->
+<script>
+  const authModal = document.getElementById("authModal");
+  const authArea = document.getElementById("authArea");
+
+  openAuth.onclick = () => authModal.style.display = "flex";
+  window.onclick = e => { if (e.target === authModal) authModal.style.display = "none"; };
+
+  signupTab.onclick = () => {
+    signupTab.classList.add("active");
+    signinTab.classList.remove("active");
+    signupSection.classList.add("active");
+    signinSection.classList.remove("active");
+  };
+
+  signinTab.onclick = () => {
+    signinTab.classList.add("active");
+    signupTab.classList.remove("active");
+    signinSection.classList.add("active");
+    signupSection.classList.remove("active");
+  };
+
+  function showToastMessage(message, type = 'success') {
+    // Create a toast notification element
+    const toast = document.createElement('div');
+    toast.className = `auth-toast auth-toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 14px 20px;
+      background: ${type === 'success' ? '#2ecc71' : type === 'error' ? '#e5152b' : '#f39c12'};
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 10000;
+      font-weight: 500;
+      animation: slideInRight 0.3s ease;
+      max-width: 350px;
+    `;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.animation = 'slideOutRight 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  // Add toast animations
+  if (!document.getElementById('toast-styles')) {
+    const style = document.createElement('style');
+    style.id = 'toast-styles';
+    style.textContent = `
+      @keyframes slideInRight {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideOutRight {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  createBtn.onclick = () => {
+    const name = suName.value.trim();
+    const email = suEmail.value.trim();
+    const password = suPassword.value;
+    
+    if (!name || !email || !password) {
+      showToastMessage('Please fill in all fields', 'error');
+      return;
+    }
+
+    if (password.length < 8) {
+      showToastMessage('Password must be at least 8 characters long', 'error');
+      return;
+    }
+
+    if (!email.includes('@')) {
+      showToastMessage('Please enter a valid email address', 'error');
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    if (users.some(u => u.email === email)) {
+      showToastMessage('An account with this email already exists. Please sign in instead.', 'error');
+      signinTab.click();
+      return;
+    }
+
+    users.push({ name, email, password, shippingAddress: null });
+    localStorage.setItem("users", JSON.stringify(users));
+    showToastMessage('Account created successfully! Please sign in.');
+    signinTab.click();
+    siEmail.value = email; // Pre-fill email in sign in
+    suName.value = '';
+    suEmail.value = '';
+    suPassword.value = '';
+  };
+
+  loginBtn.onclick = () => {
+    const email = siEmail.value.trim();
+    const password = siPassword.value;
+    
+    if (!email || !password) {
+      showToastMessage('Please enter your email and password', 'error');
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const user = users.find(u => u.email === email && u.password === password);
+    if (!user) {
+      showToastMessage('Invalid email or password', 'error');
+      return;
+    }
+
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+    authModal.style.display = "none";
+    showToastMessage(`Welcome back, ${user.name}!`);
+    renderProfile();
+  };
+
+  function renderProfile() {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) return;
+
+    authArea.innerHTML = "";
+    const node = profileTemplate.content.cloneNode(true);
+    
+    // Set user info
+    node.querySelector(".p-name").textContent = user.name;
+    node.querySelector(".p-email").textContent = user.email;
+    
+    // Set profile button with initials
+    const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    node.querySelector(".profile-btn").textContent = initials;
+    
+    // Set avatar
+    node.querySelector(".profile-menu-avatar").textContent = initials;
+
+    // Show shipping address if available
+    const addressSection = node.querySelector("#profile-address");
+    const addressText = node.querySelector("#profile-address-text");
+    if (user.shippingAddress) {
+      const addr = user.shippingAddress;
+      addressText.textContent = `${addr.address}, ${addr.city}, ${addr.state} ${addr.zip}, ${addr.country}`;
+      addressSection.style.display = "block";
+    }
+
+    // Show phone number if available
+    const phoneSection = node.querySelector("#profile-phone");
+    const phoneText = node.querySelector("#profile-phone-text");
+    if (user.phone) {
+      phoneText.textContent = user.phone;
+      phoneSection.style.display = "block";
+    }
+
+    const menu = node.querySelector(".profile-menu");
+    node.querySelector(".profile-btn").onclick = () =>
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+
+    // Edit Address button
+    node.querySelector("#editAddressBtn").onclick = () => {
+      menu.style.display = "none";
+      showEditAddressModal(user);
+    };
+
+    // Edit Phone button
+    node.querySelector("#editPhoneBtn").onclick = () => {
+      menu.style.display = "none";
+      showEditPhoneModal(user);
+    };
+
+    // View Orders button
+    node.querySelector("#viewOrdersBtn").onclick = () => {
+      menu.style.display = "none";
+      showOrderHistoryModal(user);
+    };
+
+    // Admin Panel button - check if user is admin
+    const adminPanelBtn = node.querySelector("#adminPanelBtn");
+    const adminEmails = ['afras123@gmail.com']; // List of admin emails
+    if (adminEmails.includes(user.email.toLowerCase())) {
+      adminPanelBtn.style.display = "block";
+      adminPanelBtn.onclick = () => {
+        menu.style.display = "none";
+        // Direct redirect to admin login page
+        // User will need to enter admin password: sahil@123
+        window.location.href = '/admin';
+      };
+    }
+
+    node.querySelector(".logoutBtn").onclick = () => {
+      localStorage.removeItem("loggedInUser");
+      location.reload();
+    };
+
+    authArea.appendChild(node);
+  }
+
+  // Show Edit Address Modal
+  function showEditAddressModal(user) {
+    const modal = document.createElement('div');
+    modal.className = 'profile-modal';
+    modal.innerHTML = `
+      <div class="profile-modal-content">
+        <h3><i class="fas fa-map-marker-alt"></i> Edit Shipping Address</h3>
+        <form id="edit-address-form">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="edit-addr-name" value="${user.shippingAddress?.fullName || user.name}" required>
+          </div>
+          <div class="form-group">
+            <label>Street Address</label>
+            <input type="text" id="edit-addr-street" value="${user.shippingAddress?.address || ''}" required>
+          </div>
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" id="edit-addr-city" value="${user.shippingAddress?.city || ''}" required>
+          </div>
+          <div class="form-group">
+            <label>State/Province</label>
+            <input type="text" id="edit-addr-state" value="${user.shippingAddress?.state || ''}" required>
+          </div>
+          <div class="form-group">
+            <label>Zip/Postal Code</label>
+            <input type="text" id="edit-addr-zip" value="${user.shippingAddress?.zip || ''}" required>
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <select id="edit-addr-country" required>
+              <option value="India" ${user.shippingAddress?.country === 'India' ? 'selected' : ''}>India</option>
+              <option value="USA" ${user.shippingAddress?.country === 'USA' ? 'selected' : ''}>USA</option>
+              <option value="UK" ${user.shippingAddress?.country === 'UK' ? 'selected' : ''}>UK</option>
+            </select>
+          </div>
+          <div class="profile-modal-actions">
+            <button type="submit" class="btn-primary">Save Address</button>
+            <button type="button" class="btn-secondary" onclick="this.closest('.profile-modal').remove()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.style.display = 'flex';
+
+    modal.querySelector('#edit-address-form').onsubmit = (e) => {
+      e.preventDefault();
+      const address = {
+        fullName: document.getElementById('edit-addr-name').value.trim(),
+        email: user.email,
+        address: document.getElementById('edit-addr-street').value.trim(),
+        city: document.getElementById('edit-addr-city').value.trim(),
+        state: document.getElementById('edit-addr-state').value.trim(),
+        zip: document.getElementById('edit-addr-zip').value.trim(),
+        country: document.getElementById('edit-addr-country').value,
+        phone: user.phone || null
+      };
+
+      // Update user
+      user.shippingAddress = address;
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+      // Update users array
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const userIndex = users.findIndex(u => u.email === user.email);
+      if (userIndex !== -1) {
+        users[userIndex].shippingAddress = address;
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+
+      showToastMessage('Address updated successfully!');
+      modal.remove();
+      renderProfile();
+    };
+
+    modal.onclick = (e) => {
+      if (e.target === modal) modal.remove();
+    };
+  }
+
+  // Show Edit Phone Modal
+  function showEditPhoneModal(user) {
+    const modal = document.createElement('div');
+    modal.className = 'profile-modal';
+    modal.innerHTML = `
+      <div class="profile-modal-content">
+        <h3><i class="fas fa-phone"></i> Edit Phone Number</h3>
+        <form id="edit-phone-form">
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="edit-phone" value="${user.phone || ''}" placeholder="+91 1234567890" pattern="[+]?[0-9\s-]{10,15}">
+          </div>
+          <div class="profile-modal-actions">
+            <button type="submit" class="btn-primary">Save Phone</button>
+            <button type="button" class="btn-secondary" onclick="this.closest('.profile-modal').remove()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.style.display = 'flex';
+
+    modal.querySelector('#edit-phone-form').onsubmit = (e) => {
+      e.preventDefault();
+      const phone = document.getElementById('edit-phone').value.trim();
+
+      // Update user
+      user.phone = phone || null;
+      if (user.shippingAddress) {
+        user.shippingAddress.phone = phone || null;
+      }
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+      // Update users array
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const userIndex = users.findIndex(u => u.email === user.email);
+      if (userIndex !== -1) {
+        users[userIndex].phone = phone || null;
+        if (users[userIndex].shippingAddress) {
+          users[userIndex].shippingAddress.phone = phone || null;
+        }
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+
+      showToastMessage('Phone number updated successfully!');
+      modal.remove();
+      renderProfile();
+    };
+
+    modal.onclick = (e) => {
+      if (e.target === modal) modal.remove();
+    };
+  }
+
+  // Show Order History Modal
+  function showOrderHistoryModal(user) {
+    const orders = JSON.parse(localStorage.getItem('userOrders') || '{}');
+    const userOrders = orders[user.email] || [];
+
+    const modal = document.createElement('div');
+    modal.className = 'profile-modal';
+    modal.innerHTML = `
+      <div class="profile-modal-content">
+        <h3><i class="fas fa-shopping-bag"></i> My Orders</h3>
+        <div id="orders-list">
+          ${userOrders.length === 0 
+            ? '<p style="text-align:center; color:rgba(255,255,255,0.5); padding:40px 0;">No orders yet. Start shopping to see your order history!</p>'
+            : userOrders.map(order => `
+              <div class="order-item">
+                <div class="order-item-header">
+                  <h4>Order ${order.orderNumber}</h4>
+                  <span class="order-item-date">${new Date(order.createdAt).toLocaleDateString()}</span>
+                </div>
+                <div class="order-item-products">
+                  ${order.items ? order.items.map(item => `
+                    <div class="order-product">
+                      <img src="${item.image || 'img/home_kit_front.jpg.jpg'}" alt="${item.name}">
+                      <div class="order-product-info">
+                        <div class="order-product-name">${item.name}</div>
+                        <div class="order-product-details">Size: ${item.size || 'N/A'} | Qty: ${item.quantity} | ₹${item.price * item.quantity}</div>
+                      </div>
+                    </div>
+                  `).join('') : ''}
+                </div>
+                <div class="order-item-total">
+                  Total: ₹${order.total?.toLocaleString('en-IN') || '0'}
+                </div>
+              </div>
+            `).join('')
+          }
+        </div>
+        <div class="profile-modal-actions" style="margin-top:20px;">
+          <button type="button" class="btn-secondary" style="width:100%;" onclick="this.closest('.profile-modal').remove()">Close</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.style.display = 'flex';
+
+    modal.onclick = (e) => {
+      if (e.target === modal) modal.remove();
+    };
+  }
+
+  renderProfile();
+
+  // Enter key support for form inputs
+  [suName, suEmail, suPassword].forEach(input => {
+    if (input) input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') createBtn.click();
+    });
+  });
+
+  [siEmail, siPassword].forEach(input => {
+    if (input) input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') loginBtn.click();
+    });
+  });
+</script>
+
+<!-- YOUR EXISTING SCRIPTS -->
+<script src="assets/js/admin-gate.js" defer></script>
+<script src="assets/js/ui.js" defer></script>
+<script src="assets/js/cart-utils.js" defer></script>
+<script src="assets/js/home-cart.js" defer></script>
+</script>
+<script>
+  (function(){
+    try {
+      const c = JSON.parse(localStorage.getItem('siteContact') || '{}');
+      const el = document.getElementById('site-contact');
+      if (!el) return;
+      const parts = [];
+      if (c.email) parts.push(c.email);
+      if (c.phone) parts.push(c.phone);
+      if (parts.length) el.textContent = 'Contact: ' + parts.join(' · ');
+    } catch(e) { /* ignore */ }
+  })();
+</script>
+</body>
+</html>
