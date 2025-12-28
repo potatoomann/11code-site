@@ -1,0 +1,1 @@
+Temporary note: adding mobile product-grid override to style.css and updating product-detail.html and cart.html nav markup.
