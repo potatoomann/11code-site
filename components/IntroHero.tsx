@@ -82,7 +82,7 @@ export default function IntroHero() {
                             className="absolute inset-0 w-full h-full"
                         >
                             {/* Background Atmosphere */}
-                            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/90 z-10" />
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black z-10" />
 
                             {/* Player Image */}
                             <Image
@@ -101,14 +101,9 @@ export default function IntroHero() {
                                     transition={{ delay: 0.5, duration: 0.8 }}
                                     className="text-center"
                                 >
-                                    <h2 className="text-[200px] md:text-[300px] font-bold text-white/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none">
+                                    <h2 className="text-[200px] md:text-[300px] font-bold text-white/10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none">
                                         {INTRO_SEQUENCE[currentIndex].number}
                                     </h2>
-                                    <h1 className="text-6xl md:text-9xl font-black text-white italic tracking-tighter uppercase drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] relative z-10"
-                                        style={{ textShadow: `0 0 20px ${INTRO_SEQUENCE[currentIndex].color}` }}
-                                    >
-                                        {INTRO_SEQUENCE[currentIndex].name}
-                                    </h1>
                                 </motion.div>
                             </div>
                         </motion.div>
