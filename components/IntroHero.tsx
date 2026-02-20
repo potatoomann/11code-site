@@ -89,7 +89,7 @@ export default function IntroHero() {
                                 src={INTRO_SEQUENCE[currentIndex].image}
                                 alt={INTRO_SEQUENCE[currentIndex].name}
                                 fill
-                                className="object-cover object-top"
+                                className="object-cover object-center"
                                 priority
                             />
 
@@ -101,9 +101,7 @@ export default function IntroHero() {
                                     transition={{ delay: 0.5, duration: 0.8 }}
                                     className="text-center"
                                 >
-                                    <h2 className="text-[200px] md:text-[300px] font-bold text-white/10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none">
-                                        {INTRO_SEQUENCE[currentIndex].number}
-                                    </h2>
+                                    {/* The name and numbers are removed to let the amazing photography shine */}
                                 </motion.div>
                             </div>
                         </motion.div>
