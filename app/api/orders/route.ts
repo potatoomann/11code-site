@@ -69,7 +69,7 @@ export async function GET(req: Request) {
             orderBy: { createdAt: 'desc' }
         });
 
-        const userOrders = orders.filter(order => {
+        const userOrders = orders.filter((order: any) => {
             try {
                 const customer = JSON.parse(order.customer as string);
                 return customer.email === email;
